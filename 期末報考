@@ -1,0 +1,56 @@
+library(tidyverse)
+# 讀取檔案
+data <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
+
+# 檢視數據摘要
+summary(data)
+
+# 計算總欄位數和總行數
+num_columns <- ncol(data)
+num_rows <- nrow(data)
+
+# 印出結果
+cat("總欄位數：", num_columns, "\n")
+cat("總行數：", num_rows, "\n")
+# 1. 安裝與載入 tidyverse（若已安裝可省略）
+# 步驟 1：安裝與載入 tidyverse（如已安裝可略過安裝步驟）
+install.packages("tidyverse")
+library(tidyverse)
+
+# 步驟 2：讀取檔案
+df <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
+# 3. 找出「求職」數量最高的職業別（column1）
+top_job_seeking <- data %>%
+  # 使用 slice_max 尋找「求職」最大值的那一列，n=1 表示只取一筆
+  slice_max(求職, n = 1, with_ties = FALSE) %>%
+  select(column1, 求職)
+
+# 4. 找出「有效錄取」數量最高的職業別（column1）
+top_effective_hire <- data %>%
+  slice_max(有效錄取, n = 1, with_ties = FALSE) %>%
+  select(column1, 有效錄取)
+
+# 5. 查看結果
+top_job_seeking
+top_effective_hire
+colnames(data)
+
+# 安裝並載入 tidyverse（如尚未安裝，請先安裝）
+# install.packages("tidyverse")
+library(tidyverse)
+
+# 1. 讀取檔案，假設檔案名稱為「求職、求才及推介就業人數-按職業別分(112年12月份).csv」，或請更換成實際路徑
+df <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
+
+# 2. 統計第 5 欄 (求職人數有效總計) 的最大值
+max_val <- df %>%
+  summarise(max_value = max(.data[[5]], na.rm = TRUE)) %>%
+  pull(max_value)
+
+# 3. 印出結果
+cat("求職人數有效總計（第 5 欄）的最大值為：", max_val, "\n")
+max_val <- df %>%
+  summarise(max_value = max(.[[5]], na.rm = TRUE)) %>%
+  pull(max_value)
+
+cat("求職人數有效總計（第 5 欄）最大值：", max_val, "\n")
