@@ -19,20 +19,7 @@ library(tidyverse)
 
 # 步驟 2：讀取檔案
 df <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
-# 3. 找出「求職」數量最高的職業別（column1）
-top_job_seeking <- data %>%
-  # 使用 slice_max 尋找「求職」最大值的那一列，n=1 表示只取一筆
-  slice_max(求職, n = 1, with_ties = FALSE) %>%
-  select(column1, 求職)
 
-# 4. 找出「有效錄取」數量最高的職業別（column1）
-top_effective_hire <- data %>%
-  slice_max(有效錄取, n = 1, with_ties = FALSE) %>%
-  select(column1, 有效錄取)
-
-# 5. 查看結果
-top_job_seeking
-top_effective_hire
 colnames(data)
 
 # 安裝並載入 tidyverse（如尚未安裝，請先安裝）
@@ -42,10 +29,17 @@ library(tidyverse)
 # 1. 讀取檔案，假設檔案名稱為「求職、求才及推介就業人數-按職業別分(112年12月份).csv」，或請更換成實際路徑
 df <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
 
-# 2. 統計第 5 欄 (求職人數有效總計) 的最大值
+df <- df %>%
+  rename(
+    求職人數有效總計 = 5  # 把第 5 欄重新命名
+  )
+
 max_val <- df %>%
-  summarise(max_value = max(.data[[5]], na.rm = TRUE)) %>%
+  summarise(max_value = max(`求職人數有效總計`, na.rm = TRUE)) %>%
   pull(max_value)
+
+cat("求職人數有效總計的最大值為：", max_val, "\n")
+
 
 # 3. 印出結果
 cat("求職人數有效總計（第 5 欄）的最大值為：", max_val, "\n")
@@ -53,4 +47,44 @@ max_val <- df %>%
   summarise(max_value = max(.[[5]], na.rm = TRUE)) %>%
   pull(max_value)
 
-cat("求職人數有效總計（第 5 欄）最大值：", max_val, "\n")
+
+# 如尚未安裝 tidyverse
+# install.packages("tidyverse")
+
+library(tidyverse)
+
+# 1. 讀取資料，假設檔名為 data.csv，路徑請自行調整
+data <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
+
+# 2. 假設「求職人數有效總計」就是欄名 "求職人數有效總計" 或位於第5欄
+#   若確切欄名不同，請以實際欄位名稱取代下面的 "求職人數有效總計"
+max_row <-
+  data %>%
+  # 使用欄位名稱 (若想以欄位位置選取，可用 data[[5]] 取代)
+  slice_max(`求職人數有效總計`, n = 1)
+
+# 3. 查看該筆資料
+print(max_row)
+
+# 第一步：載入所需套件 ----
+# 如尚未安裝 tidyverse，請先安裝：install.packages("tidyverse")
+library(tidyverse)
+
+# 第二步：讀取檔案 ----
+# 假設 CSV 檔名為 "data.csv"；若是 Excel 檔請改用 readxl::read_excel()
+df <- read_csv("求職、求才及推介就業人數-按職業別分(112年12月份).csv")
+
+# 第三步：篩選 row2~row20 ----
+sub_df <- df %>%
+  slice(2:20)  # 取第 2~20 筆資料
+
+# 第四步：找出 “求職人數有效總計” 最高值所在之列 ----
+# 假設「求職人數有效總計」是第 5 欄，但我們這邊直接用欄位名稱 "求職人數有效總計" 來篩選
+highest_row <- sub_df %>%
+  filter(`求職人數有效總計` == max(`求職人數有效總計`, na.rm = TRUE))
+names(df)
+# 第五步：輸出結果 ----
+# 假設你需要輸出最高的「項目人員」與「項目別」這兩個欄位
+cat("在 row2 ~ row20 中，“求職人數有效總計”最高的值為：", highest_row$`求職人數有效總計`, "\n")
+cat("對應的『項目別』為：", highest_row$`項目別`, "\n")
+
