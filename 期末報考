@@ -87,4 +87,18 @@ names(df)
 # 假設你需要輸出最高的「項目人員」與「項目別」這兩個欄位
 cat("在 row2 ~ row20 中，“求職人數有效總計”最高的值為：", highest_row$`求職人數有效總計`, "\n")
 cat("對應的『項目別』為：", highest_row$`項目別`, "\n")
+# 篩選第30~40列
+sub_df <- df %>%
+  slice(30:40)
+
+# 找到「求職人數有效總計」(第5欄)的最大值
+max_value <- max(sub_df[[5]], na.rm = TRUE)
+
+# 篩選出最大值所在行
+highest_row <- sub_df %>%
+  filter(.[[5]] == max_value)
+
+# 假設你需要輸出最高的「項目人員」與「項目別」這兩個欄位
+cat("在 row30 ~ row40 中，“求職人數有效總計”最高的值為：", highest_row$`求職人數有效總計`, "\n")
+cat("對應的『項目別』為：", highest_row$`項目別`, "\n")
 
